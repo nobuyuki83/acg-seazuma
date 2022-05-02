@@ -31,12 +31,19 @@ void main()
     // in GLSL, you can use built-in math function (e.g., sqrt, atan).
     // look at page 56 of https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.1.20.pdf
 
-    z0 = z0 - cam_z_pos;
+//I could not be much confident about the interpretation of the instruction,
+//At first, I attempted to make similar result as what I saw in the lecture.
+//But I felt it was rather facing +Z direction, whereas the instruction says -Z direction, 
+//and it projected the area z0 > cam_z_pos to the area x1*x1+x2*x2 < 1/2, not the unit circle.
+//So, I also attempted to follow these instructions, although it is different from what I saw in the lecture.
+//Here, I interpretted that the "back" direction should be projected as "outside" of the unit circle. 
+
+    z0 = cam_z_pos - z0;
     float rxy = sqrt(x0*x0+y0*y0);
     float rxyz = sqrt(x0*x0+y0*y0+z0*z0);
     float B = atan(rxy,z0);
-    float x1 = B*x0/rxy/PI;
-    float y1 = B*y0/rxy/PI;
+    float x1 = B*x0/rxy/(PI/2);
+    float y1 = B*y0/rxy/(PI/2);
     float z1 = rxyz/PI;
 
     gl_Position = vec4(x1,y1,z1,1); // homogenious coordinate
