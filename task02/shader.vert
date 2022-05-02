@@ -30,8 +30,14 @@ void main()
     // the "back" direction (i.e., +Z direction) will be projected as the unit circle in XY plane.
     // in GLSL, you can use built-in math function (e.g., sqrt, atan).
     // look at page 56 of https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.1.20.pdf
-    float x1 = x0;
-    float y1 = y0;
-    float z1 = z0;
+
+    z0 = z0 - cam_z_pos;
+    float rxy = sqrt(x0*x0+y0*y0);
+    float rxyz = sqrt(x0*x0+y0*y0+z0*z0);
+    float B = atan(rxy,z0);
+    float x1 = B*x0/rxy/PI;
+    float y1 = B*y0/rxy/PI;
+    float z1 = rxyz/PI;
+
     gl_Position = vec4(x1,y1,z1,1); // homogenious coordinate
 }
