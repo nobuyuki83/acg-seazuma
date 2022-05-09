@@ -27,12 +27,35 @@ float SDF(vec3 pos)
   // https://iquilezles.org/articles/distfunctions/
 
   // for "problem2" the code below is not used.
-  return sdf_box(pos, vec3(0.1,0.2,0.3));
+  // return sdf_box(pos, vec3(0.1,0.2,0.3));
+  float r = length(pos);
+  if(r<0.8){
+   float ax = abs(pos.x);
+   float ay = abs(pos.y);
+   float az = abs(pos.z);
+   float dx = ax - 0.2*round(ax/0.2);
+   float dy = ay - 0.2*round(ay/0.2);
+   float dz = az - 0.2*round(az/0.2);
+   return max(r-0.8, 0.12-sqrt(dx*dx+dy*dy+dz*dz) );
+  }
+  else{
+   vec3 pos1 = 0.8*pos/r;
+   float ax = abs(pos1.x);
+   float ay = abs(pos1.y);
+   float az = abs(pos1.z);
+   float dx = ax - 0.2*round(ax/0.2);
+   float dy = ay - 0.2*round(ay/0.2);
+   float dz = az - 0.2*round(az/0.2);
+   float dr = sqrt(dx*dx+dy*dy+dz*dz);
+   return dr>0.12 ? r-0.8 : sqrt((r-0.8)*(r-0.8)+(0.12-dr)*(0.12-dr));
+  }
 }
+
 
 void main()
 {
   // camera position
+//time = time/10;
   vec3 cam_pos = normalize( vec3(sin(time),cos(time),sin(3*time)) );
 
   // local frame defined on the cameera
