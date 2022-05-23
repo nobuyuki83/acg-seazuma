@@ -124,6 +124,8 @@ void main()
   // Bezier curve with control points {p0,p1,p2,p3} look from q
   // p(t) = (1-t)^3*p0 + 3*(1-t)^2t*p1 + 3*(1-t)t^2*p2 + t^3*p3 - q;
   //      = t^3*bezier[3] + t^2*bezier[2] + t*bezier[1] + bezier[0];
+//It seems p(t) = t^3*bezier[0] + t^2*bezier[1] + t*bezier[2] + bezier[3];
+
   vec2[4] bezier = vec2[4] (
     -p0 + 3 * p1 - 3 * p2 + p3,
     3 * p0 - 6 * p1 + 3 * p2,
@@ -155,9 +157,9 @@ void main()
 
   // the following three lines of function is not used for Problem2
   // The code is here to give the idea what the cubic Bezier curve looks like
-  for(int i=0;i<10;++i){
-    Distance = min(Distance, length(EvaluateBezier(0.1*i, bezier)));
-  }
+//  for(int i=0;i<10;++i){
+//    Distance = min(Distance, length(EvaluateBezier(0.1*i, bezier)));
+//  }
 
   // this is the structure to store the range
   struct range {
@@ -185,6 +187,10 @@ void main()
     // Problem2 of the assignment
     // write some code to complete the implementation of bisection method
     // around 10 lines of code should be enough
+    int snm = SturmNumber(middle,sturm_seq);
+    stack[nstack] = range(lower, middle, snl, snm);
+    stack[nstack+1] = range(middle, upper, snm, snu);
+    nstack = nstack+2;
   }
 
 
